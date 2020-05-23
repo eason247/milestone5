@@ -6,6 +6,6 @@ public interface UserService {
 
 	String register(User user);
 
-	String login(User user);
+	boolean login(User user);
 
 }

@@ -2,20 +2,36 @@ package com.stock.eason.bean;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.Entity;
+
+@SuppressWarnings("deprecation")
+@Entity
 public class Company implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-	
-	private Integer companyId;
 
+    @Id
+    @Column(name="companyId")
+	private Integer companyId;
+    @Column(name="name")
 	private String name;
+    @Column(name="turnover")
 	private String turnover;
+    @Column(name="ceo")
 	private String ceo;
+    @Column(name="boardOfDirectors")
 	private String boardOfDirectors;
+    @Column(name="listedInStockExchanges")
 	private String listedInStockExchanges;
+    @Column(name="sector")
 	private String sector;
+    @Column(name="description")
 	private String description;
+    @Column(name="stockCodeineachStockExchange")
 	private String stockCodeineachStockExchange;
 	public Integer getCompanyId() {
 		return companyId;

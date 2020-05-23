@@ -24,7 +24,12 @@ public class UserController {
 
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public String login(@RequestBody User user) {
-		return userService.login(user);
+		
+		if(userService.login(user)) {
+			
+		}
+		
+		return null;
 	}
 	
 	

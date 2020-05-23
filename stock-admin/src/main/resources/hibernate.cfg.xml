@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--
+            1:数据连接配置
+            2:加载所有的映射（*.hbm.xml）
+         -->
+
+         <!-- 1:数据连接配置 -->
+         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+         <property name="hibernate.connection.url">jdbc:mysql:///test</property>
+         <property name="hibernate.connection.username">root</property>
+         <property name="hibernate.connection.password">123456</property>
+         <!-- mysql数据库的方言 -->
+         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+         <property name="hibernate.show_sql">true</property>
+
+         <!-- 2:加载所有的映射（*.hbm.xml） -->
+         <mapping resource="com/bie/po/User.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>

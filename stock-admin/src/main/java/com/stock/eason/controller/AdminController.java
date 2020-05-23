@@ -1,6 +1,7 @@
 package com.stock.eason.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.eason.bean.Company;
@@ -24,8 +26,9 @@ public class AdminController {
     private AdminService adminService;
 
     @RequestMapping("/getMatchingCompanies ")
-    public ArrayList<Company> getMatchingCompanies(HttpServletRequest request) {
-        return adminService.getMatchingCompanies();
+    public ArrayList<Company> getMatchingCompanies(@RequestBody HashMap<String, Object> param) {
+        return adminService.getMatchingCompanies(param);
+        
     }
     @RequestMapping("/getCompanyDetails  ")
     public Company getCompanyDetails (Integer id) {
@@ -36,12 +39,12 @@ public class AdminController {
     	return adminService.getCompanyIPODetails(companyName);
     }
     @RequestMapping("/getCompanyIPOs  ")
-    public ArrayList<IPOsPlanned> getCompanyIPOs (Integer id) {
-    	return adminService.getCompanyIPOs(id);
+    public ArrayList<IPOsPlanned> getCompanyIPOs () {
+    	return adminService.getCompanyIPOs();
     }
 
 	@RequestMapping(value = "/addCompany",method = RequestMethod.POST)
-	public String addCompany(@RequestBody Company company) {
+	public String addCompany(@RequestParam Company company) {
 		return adminService.addCompany(company);
 	}
 	
@@ -56,8 +59,8 @@ public class AdminController {
 	}
 	
     @RequestMapping("/getStockExchange  ")
-    public ArrayList<StockExchange> getStockExchange (Integer id) {
-    	return adminService.getStockExchange(id);
+    public ArrayList<StockExchange> getStockExchange () {
+    	return adminService.getStockExchange();
     }
     public static boolean canVisitDb = true;
     /*

@@ -2,18 +2,29 @@ package com.stock.eason.bean;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 public class IPOsPlanned implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8310699300367555909L;
+    @Id
+    @Column(name="id")
 	private Integer id;
+    @Column(name="companyName")
 	private String companyName;
+    @Column(name="stockExchange")
 	private String stockExchange;
+    @Column(name="pricepershare")
 	private String pricepershare;
+    @Column(name="totalnumberofShares")
 	private String totalnumberofShares;
+    @Column(name="openDateTime")
 	private String openDateTime;
+    @Column(name="remarks")
 	private String remarks;
 	public Integer getId() {
 		return id;

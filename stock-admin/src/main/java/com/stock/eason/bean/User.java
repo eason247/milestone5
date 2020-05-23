@@ -2,17 +2,28 @@ package com.stock.eason.bean;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 public class User implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name="id")
 	private Integer id;
+    @Column(name="username")
 	private String username;
+    @Column(name="password")
 	private String password;
+    @Column(name="userType")
 	private String userType;
+    @Column(name="email")
 	private String email;
+    @Column(name="cellphone")
 	private String cellphone;
+    @Column(name="confirmed")
 	private String confirmed;
 	public Integer getId() {
 		return id;
