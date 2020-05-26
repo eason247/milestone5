@@ -1,5 +1,7 @@
 package com.stock.eason.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +25,15 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
-	public String login(@RequestBody User user) {
+	public String login(@RequestBody User user,HttpSession session) {
 		
 		if(userService.login(user)) {
-			
+			session.setAttribute("user", user);
+			return "redirect:/admin/index";
+		}else {
+			return "redirect:/admin/loginerror";
 		}
 		
-		return null;
 	}
 	
 	

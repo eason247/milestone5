@@ -73,7 +73,20 @@ public class ExcelController {
     
     @RequestMapping("/queryData")
     public ArrayList<StockPricedetailsExcel> queryData(@RequestBody HashMap<String, Object> param) {
-    	
+        return excelService.queryData(param);
+    }
+    
+    @RequestMapping("/queryData")
+    public ArrayList<StockPricedetailsExcel> generateReportDataByCompany(String company) {
+    	HashMap<String, Object> param = new HashMap<String, Object>();
+    	param.put("companyName", company);
+        return excelService.queryData(param);
+    }
+    
+    @RequestMapping("/queryData")
+    public ArrayList<StockPricedetailsExcel> generateReportDataByDate(String dateoftheStockPrice) {
+    	HashMap<String, Object> param = new HashMap<String, Object>();
+    	param.put("dateoftheStockPrice", dateoftheStockPrice);
         return excelService.queryData(param);
     }
 }
