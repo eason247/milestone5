@@ -8,4 +8,8 @@ public interface UserService {
 
 	boolean login(User user);
 
+	User findById(Integer id);
+
+	String deleteUser(Integer id);
+
 }

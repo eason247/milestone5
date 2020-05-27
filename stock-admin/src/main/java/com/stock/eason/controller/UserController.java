@@ -3,6 +3,7 @@ package com.stock.eason.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,16 @@ public class UserController {
 			return "redirect:/admin/loginerror";
 		}
 		
+	}
+	
+	@RequestMapping("/users/{id}")
+	public User getUserById(@PathVariable(value = "id") Integer id) {
+		return userService.findById(id);
+	}
+
+	@RequestMapping("/users/{id}")
+	public String deleteUser(@PathVariable Integer id) {
+		return userService.deleteUser(id);
 	}
 	
 	

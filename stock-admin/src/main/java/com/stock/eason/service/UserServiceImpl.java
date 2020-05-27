@@ -33,6 +33,17 @@ public class UserServiceImpl implements UserService{
 			return false;
 		}
 	}
+
+	@Override
+	public User findById(Integer id) {
+		return (User) DBUtil.selectById(id, User.class);
+	}
+
+	@Override
+	public String deleteUser(Integer id) {
+		DBUtil.deleteById(id, User.class);
+		return null;
+	}
 	
 	
 

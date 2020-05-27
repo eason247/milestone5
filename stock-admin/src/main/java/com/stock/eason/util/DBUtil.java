@@ -102,4 +102,35 @@ public class DBUtil {
 
 	}
 	
+	
+	public static Object deleteById(Integer id,Object obj) {
+        SessionFactory factory = null;
+        Session session = null;
+        try {
+            // 创建SessionFactory
+            factory = new Configuration().configure().buildSessionFactory();
+            // 创建Session
+            session= factory.openSession();
+        	
+            session.beginTransaction(); // 开启事务
+            
+            Object o=session.load(Object.class, id);
+            session.delete(o);
+            session.getTransaction().commit(); // 提交事务
+            return o;
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();; // 事务滚
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+            if (factory != null) {
+                factory.close();
+            }
+        }
+		return null;
+
+	}
+	
 }

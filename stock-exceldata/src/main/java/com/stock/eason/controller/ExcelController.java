@@ -2,6 +2,11 @@ package com.stock.eason.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.netflix.client.http.HttpRequest;
 import com.stock.eason.bean.Company;
 import com.stock.eason.bean.StockPricedetailsExcel;
 import com.stock.eason.service.ExcelService;
@@ -68,6 +74,35 @@ public class ExcelController {
     	}
 
 	}
+	@PostMapping("/exportToExcel")
+	public void  exportToExcel( HttpServletRequest  request ,  HttpServletResponse response,HttpSession session,@RequestBody HashMap<String, Object> param)throws Exception{
+        String randomNumber = request.getParameter("randomNumber");// session名称
+        try {
+            session = request.getSession();
+            session.setAttribute(randomNumber, new Double(1));
+            // 导出的EXCEL文件名
+            String exportFileName = "addressBook.xlsx";
+            response.reset();
+            response.setContentType("octets/stream");
+            // response.setHeader("Content-Disposition","attachment;filename="+exportFileName);
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + new String(exportFileName.getBytes("UTF-8"), "iso8859-1") + "\"");
+
+            // 导出的EXCEL列属性
+            ArrayList<StockPricedetailsExcel> columnListName = excelService.queryData(param);
+            Bean2ExcelConversionUtils.beans2excelFile07(columnListName, data, response.getOutputStream());
+            session.setAttribute(randomNumber, new Double(100));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute(randomNumber, new Double(100));
+        } catch (Throwable e) {
+            e.printStackTrace();
+            session.setAttribute(randomNumber, new Double(100));
+        }
+		
+	}
+	
+	
    
     
     
@@ -76,14 +111,14 @@ public class ExcelController {
         return excelService.queryData(param);
     }
     
-    @RequestMapping("/queryData")
+    @RequestMapping("/generateReportDataByCompany")
     public ArrayList<StockPricedetailsExcel> generateReportDataByCompany(String company) {
     	HashMap<String, Object> param = new HashMap<String, Object>();
     	param.put("companyName", company);
         return excelService.queryData(param);
     }
     
-    @RequestMapping("/queryData")
+    @RequestMapping("/generateReportDataByDate")
     public ArrayList<StockPricedetailsExcel> generateReportDataByDate(String dateoftheStockPrice) {
     	HashMap<String, Object> param = new HashMap<String, Object>();
     	param.put("dateoftheStockPrice", dateoftheStockPrice);
