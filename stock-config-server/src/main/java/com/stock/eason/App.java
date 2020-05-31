@@ -1,4 +1,4 @@
-package com.xiangxue.jack;
+package com.stock.eason;
 
 /**
  * Hello world!
