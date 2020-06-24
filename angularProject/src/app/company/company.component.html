@@ -1,0 +1,43 @@
+
+
+<app-admin [backgroundColor] = backgroundColor></app-admin>
+
+<div style="display: block;position: relative; top:30px;">
+  <button type="button" class="btn btn-primary" routerLink="/newCompany" style="position: relative;left: 100px;bottom: 10px;">create new company</button>
+  <table class="table" style="position: relative;left: 50px;">
+    <thead>
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Stock Exhange</th>
+        <th scope="col">CEO</th>
+        <th scope="col">IPO Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let company of items">
+        <th scope="row">{{company.companyName}}</th>
+        <td>{{company.stockExhange}}</td>
+        <td>{{company.CEO}}</td>
+        <td>{{company.ipoDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      </tr>
+      <!-- <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td><input class="edit" type="button" value="edit"></td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>

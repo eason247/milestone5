@@ -1,0 +1,43 @@
+<app-user></app-user>
+<div style="display: block;position: relative; top:30px;">
+  <table class="table" style="position: relative;left: 50px;">
+    <thead>
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Stock Exhange</th>
+        <th scope="col">per price share</th>
+        <th scope="col">total numbers of share</th>
+        <th scope="col">open Date</th>
+        <th scope="col">view</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let item of items">
+        <th scope="row">{{item.companyName}}</th>
+        <td>{{item.stockExhange}}</td>
+        <td>{{item.pricePerShare}}</td>
+        <td>{{item.openDateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>{{item.TotalNumbersOfshare}}</td>
+        <td>{{item.remarks}}</td>
+      </tr>
+      <!-- <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td><input class="edit" type="button" value="edit"></td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>

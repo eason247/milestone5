@@ -1,0 +1,40 @@
+<app-admin></app-admin>
+<div style="display: block;position: relative; top:30px;">
+  <button type="button" class="btn btn-primary" routerLink="/newExchange" style="position: relative;left: 100px;bottom: 10px;">create stock exchange</button>
+  <table class="table" style="position: relative;left: 50px;">
+    <thead>
+      <tr>
+        <th scope="col">Exchange Name</th>
+        <th scope="col">brief description</th>
+        <th scope="col">contact address</th>
+        <th scope="col">remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let item of items">
+        <th scope="row">{{item.exchangeName}}</th>
+        <td>{{item.briefDescription}}</td>
+        <td>{{item.contactAddress}}</td>
+        <td>{{item.remarks}}</td>
+      </tr>
+      <!-- <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td><input class="edit" type="button" value="edit"></td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>

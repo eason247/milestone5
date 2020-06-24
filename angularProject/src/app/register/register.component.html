@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--  Bootstrap CSS文件，生产环境请使用压缩版本(min)  -->
+    <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+    <!--  bootstrap依赖于jquery，务必在bootstrap前引入  -->
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <!--  Bootstrap JS文件，生产环境请使用压缩版本(min)  -->
+    <!-- <script type="text/javascript" src="js/bootstrap.bundle.js"></script> -->
+    <title>Bootstrap</title>
+    <style>
+        #result{
+            display: none;
+        }
+        .title{
+            margin-top:100px;
+            margin-bottom:50px;
+        }
+        .operate button{
+            margin: 0 auto;
+        }
+        .password{
+          position: relative;
+          left: 760px;
+          /* bottom: 50px; */
+          top: 333px;
+        }
+    </style>
+</head>
+<body>
+    <!--  通过class的形式，注入bootstrap的css样式   -->
+    <!--  通过col-xx-xx的形式，注入bootstrap的网格布局样式，控制相对宽度（bootstrap4以上通过flexbox实现） -->
+    <!--  通过offset-xx-xx 控制相对偏移量 -->
+    <div class="password"> <button type="button" class="btn btn-secondary">send passcode</button></div>
+    <h2 class="title col-sm-12 offset-sm-3">Sign up</h2>
+    <form id="myForm" class="col-sm-6 offset-sm-3 col-12" action="localhost:8080/user" method="get">
+        <div class="form-group form-row">
+            <label class="col-form-label col-2">user name</label>
+            <div class="col-10">
+                <input class="form-control col-10" name="user name" type="text" />
+            </div>
+        </div>
+        <div class="form-group form-row">
+            <label class="col-form-label col-2">password</label>
+            <div class="col-10">
+                <input class="form-control col-10" name="password" type="password" />
+            </div>
+        </div>
+        <div class="form-group form-row">
+          <label class="col-form-label col-2">Email address</label>
+          <div class="col-10">
+              <input class="form-control col-10" name="Email address" type="text" />
+          </div>
+         
+        </div>
+        
+       
+        <div class="form-group form-row">
+            <label class="col-form-label col-2">passcode</label>
+            <div class="col-10">
+                <input class="form-control col-10" name="passcode" type="text" />
+            </div>
+        </div>
+        <div class="form-group form-row">
+          <label class="col-form-label col-2">cellphone</label>
+          <div class="col-10">
+              <input class="form-control col-10" name="cellphone" type="text" />
+          </div>
+      </div>       
+
+        <!--    定义bootstrap alert插件框    -->
+        <div id="result" class="alert alert-danger">
+
+        </div>
+        <div class="form-group form-row operate">
+            <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+    </form>
+   
+    <script>
+        // var form = document.querySelector('#myForm');
+        // var result = document.querySelector('#result');
+        // form.addEventListener('submit', function(e){
+        //     if(!document.querySelector('[name=password]').value){
+        //         result.style.display = 'block';
+        //         result.innerHTML = '密码为空';
+        //     }else{
+        //         result.style.display = 'none';
+        //
+        //     }
+        //     e.preventDefault();
+        // });
+        /*通过jQuery语法重写上面代码*/
+        var form = $('#myForm');
+        var result = $('#result');
+		// '' null undefined  flase
+        form.submit(function (e) {
+            if(!$('[name=password]').val()){
+                // 不推荐在生产项目中写超过3个以上的链式调用
+                result.css('display', 'block' ).text('密码为空');
+            }else{
+                result.css('display', 'none' )
+            }
+            e.preventDefault();
+        })
+
+    </script>
+</body>
+</html>
