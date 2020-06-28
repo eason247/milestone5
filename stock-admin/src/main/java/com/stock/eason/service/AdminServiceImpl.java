@@ -44,12 +44,13 @@ public class AdminServiceImpl implements AdminService {
 	public ArrayList<Company> getMatchingCompanies(HashMap<String, Object> param) {
 		Iterator<Entry<String, Object>> entries = param.entrySet().iterator();
 		String sql = "";
+		ArrayList<String> arrayList = new ArrayList<String>();
 		while (entries.hasNext()) {
 		  Entry<String, Object> entry = entries.next();
-		  System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-		  sql = "from Company where " + entry.getKey() + "=" + entry.getValue();
+		  sql = "from Company where " + entry.getKey() + "= ?";
+		  arrayList.add(entry.getValue().toString());
 		}
-		return DBUtil.selectByParam(sql);
+		return DBUtil.selectByParam(sql,arrayList);
 	}
 
 	@Override
@@ -84,12 +85,14 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public ArrayList<IPOsPlanned> getCompanyIPOs() {
-		return DBUtil.selectByParam("from IPOs");
+		ArrayList<String> arrayList = new ArrayList<String>();
+		return DBUtil.selectByParam("from IPOs",arrayList);
 	}
 
 	@Override
 	public ArrayList<StockExchange> getStockExchange() {
-		return DBUtil.selectByParam("from StockExchange");
+		ArrayList<String> arrayList = new ArrayList<String>();
+		return DBUtil.selectByParam("from StockExchange",arrayList);
 	}
 
 }

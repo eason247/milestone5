@@ -97,6 +97,12 @@
 		</dependency>
 
 
+
+<!-- <dependency>
+        <groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency> -->
+
 <dependency>
      <groupId>org.hibernate</groupId>
      <artifactId>hibernate-core</artifactId>
@@ -106,7 +112,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.41</version>
+			<version>8.0.11</version>
 		</dependency>
 		<!--添加log4j依赖 -->
 		<dependency>

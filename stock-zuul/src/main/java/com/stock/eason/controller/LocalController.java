@@ -11,7 +11,7 @@ public class LocalController {
 
     @RequestMapping("/queryUser")
     public String queryUser() {
-        log.info("zuul->queryUser");
+//        log.info("zuul->queryUser");
         return "zuul->queryUser";
     }
 }

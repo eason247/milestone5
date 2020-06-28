@@ -39,21 +39,40 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 
+    @HystrixCommand(fallbackMethod = "loginsFallback",
+            commandKey = "queryContents",
+            groupKey = "querygroup-one",
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests",value = "100"),
+                    @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000000000")
+            },
+            threadPoolKey = "queryContentshystrixJackpool", threadPoolProperties = {
+            @HystrixProperty(name = "coreSize", value = "100")
+    })
 	@Override
 	public boolean login(User user) {
-		String sql = "from User where username = "+user.getUsername();
-		ArrayList<User> list = DBUtil.selectByParam(sql);
+		String sql = "select * from User where username = ?";
+		ArrayList<String> arrayList = new ArrayList<String>();
+		arrayList.add(user.getUsername());
+		ArrayList<User> list = DBUtil.selectByParam(sql,arrayList );
 		if(list!=null) {
-			User u = list.get(0);
-			return u.getPassword()==user.getPassword();
+			User u = (User)list.get(0);
+			return u.getPassword().equals(user.getPassword());
 		}else {
 			return false;
 		}
 	}
+    
+    public boolean loginsFallback(User user) {
+//    	log.info("===============loginsFallback=================logins fail");
+    	return false;
+    }
 
 	@Override
 	public User findById(Integer id) {
-		return (User) DBUtil.selectById(id, User.class);
+		User us = (User) DBUtil.selectById(id, User.class);
+		return us;
 	}
 
 	@Override
@@ -104,124 +123,124 @@ public class UserServiceImpl implements UserService{
      * threadPoolProperties 灞炴��
      * coreSize   鎵ц鍛戒护绾跨▼姹犵殑鏈�澶х嚎绋嬫暟锛屼篃灏辨槸鍛戒护鎵ц鐨勬渶澶у苟鍙戞暟锛岄粯璁�10
      */
-    @HystrixCommand(fallbackMethod = "queryContentsFallback",
-            commandKey = "queryContents",
-            groupKey = "querygroup-one",
-            commandProperties = {
-                    @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests",value = "100"),
-                    @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
-                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000000000")
-            },
-            threadPoolKey = "queryContentshystrixJackpool", threadPoolProperties = {
-            @HystrixProperty(name = "coreSize", value = "100")
-    })
-    @Override
-    public List<ConsultContent> queryContents() {
-        log.info(Thread.currentThread().getName() + "========queryContents=========");
-        s.incrementAndGet();
-        List<ConsultContent> results = restTemplate.getForObject("http://"
-                + SERVIER_NAME + "/user/queryContent", List.class);
-        return results;
-    }
-
-    @Override
-    public List<ConsultContent> queryContents(HttpServletRequest request) {
-        log.info(Thread.currentThread().getName() + "========queryContents=========");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", request.getHeader("Authorization"));
-        List<ConsultContent> results = restTemplate.exchange("http://"
-                        + SERVIER_NAME + "/user/queryContent", HttpMethod.GET,
-                new HttpEntity<String>(headers), List.class).getBody();
-        return results;
-    }
-
-    @HystrixCommand(fallbackMethod = "queryContentsAsynFallback")
-    @Override
-    public Future<String> queryContentsAsyn() {
-        return new AsyncResult<String>() {
-            @Override
-            public String invoke() {
-                log.info("========queryContents=========");
-                List<ConsultContent> results = restTemplate.getForObject("http://"
-                        + SERVIER_NAME + "/user/queryContent", List.class);
-                return JSONObject.toJSONString(results);
-            }
-        };
-    }
-
-    public String queryContentsAsynFallback() {
-        log.info("========queryContentsAsynFallback=========");
-        return "queryContentsAsynFallback";
-    }
-
-    @HystrixCommand(threadPoolKey = "queryContentshystrixJackpool")
-    //    @Retryable
-    @Override
-    public List<ConsultContent> queryContent() {
-        log.info("========queryContent=========");
-        List<ConsultContent> results = restTemplate.getForObject("http://"
-                + SERVIER_NAME + "/user/queryContent", List.class);
-        return results;
-    }
-
-    public List<ConsultContent> queryContentsFallback() {
-        f.incrementAndGet();
-        log.info("===============queryContentsFallback=================");
-
-        return null;
-    }
-
-    @Override
-    public String queryMonitor() {
-        JSONObject jo = new JSONObject();
-        jo.put("鎴愬姛鏁�", s.get());
-        jo.put("澶辫触鏁�", f.get());
-        return jo.toJSONString();
-    }
-
-    /*
-     *  ObservableExecutionMode.EAGER  琛ㄧず浣跨敤observe()鏂瑰紡鎵ц锛屾槸hot Observeable
-     *  ObservableExecutionMode.LAZY   琛ㄧず浣跨敤toObservable()鎵ц锛屾槸cold Observeable
-     */
-    @HystrixCommand(fallbackMethod = "exceptionHandler",
-            observableExecutionMode = ObservableExecutionMode.LAZY,
-            commandProperties = {@HystrixProperty(name = "execution.isolation.strategy", value = "THREAD")},
-            threadPoolKey = "hystrixJackpool", threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "10")})
-    @Override
-    public Observable<String> mergeResult() {
-        log.info("===================" + Thread.currentThread().getName()
-                + "================");
-
-        return Observable.create(new Observable.OnSubscribe<String>() {
-
-            public void call(Subscriber<? super String> observer) {
-                log.info("==================="
-                        + Thread.currentThread().getName() + "================");
-                try {
-                    if (!observer.isUnsubscribed()) {
-                        log.info(Thread.currentThread().getName()
-                                + "===============onNext  invoke=================");
-                        List<ConsultContent> results = restTemplate.getForObject("http://"
-                                + SERVIER_NAME + "/user/queryContent", List.class);
-                        log.info(JSONObject.toJSONString(results));
-                        observer.onNext(JSONObject.toJSONString(results));
-
-                        List<ZgGoods> goods = restTemplate.getForObject("http://"
-                                + SERVIER_NAME + "/goods/queryGoods", List.class);
-                        log.info(JSONObject.toJSONString(goods));
-                        observer.onNext(JSONObject.toJSONString(goods));
-                        observer.onCompleted();
-                    }
-                } catch (Exception e) {
-                    observer.onError(e);
-                }
-            }
-        });
-    }
-
-    public Observable<String> exceptionHandler() {
-        return Observable.just("鎴戦敊浜嗭紒锛侊紒");
-    }
+//    @HystrixCommand(fallbackMethod = "queryContentsFallback",
+//            commandKey = "queryContents",
+//            groupKey = "querygroup-one",
+//            commandProperties = {
+//                    @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests",value = "100"),
+//                    @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE"),
+//                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000000000")
+//            },
+//            threadPoolKey = "queryContentshystrixJackpool", threadPoolProperties = {
+//            @HystrixProperty(name = "coreSize", value = "100")
+//    })
+//    @Override
+//    public List<ConsultContent> queryContents() {
+//        log.info(Thread.currentThread().getName() + "========queryContents=========");
+//        s.incrementAndGet();
+//        List<ConsultContent> results = restTemplate.getForObject("http://"
+//                + SERVIER_NAME + "/user/queryContent", List.class);
+//        return results;
+//    }
+//
+//    @Override
+//    public List<ConsultContent> queryContents(HttpServletRequest request) {
+//        log.info(Thread.currentThread().getName() + "========queryContents=========");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Authorization", request.getHeader("Authorization"));
+//        List<ConsultContent> results = restTemplate.exchange("http://"
+//                        + SERVIER_NAME + "/user/queryContent", HttpMethod.GET,
+//                new HttpEntity<String>(headers), List.class).getBody();
+//        return results;
+//    }
+//
+//    @HystrixCommand(fallbackMethod = "queryContentsAsynFallback")
+//    @Override
+//    public Future<String> queryContentsAsyn() {
+//        return new AsyncResult<String>() {
+//            @Override
+//            public String invoke() {
+//                log.info("========queryContents=========");
+//                List<ConsultContent> results = restTemplate.getForObject("http://"
+//                        + SERVIER_NAME + "/user/queryContent", List.class);
+//                return JSONObject.toJSONString(results);
+//            }
+//        };
+//    }
+//
+//    public String queryContentsAsynFallback() {
+//        log.info("========queryContentsAsynFallback=========");
+//        return "queryContentsAsynFallback";
+//    }
+//
+//    @HystrixCommand(threadPoolKey = "queryContentshystrixJackpool")
+//    //    @Retryable
+//    @Override
+//    public List<ConsultContent> queryContent() {
+//        log.info("========queryContent=========");
+//        List<ConsultContent> results = restTemplate.getForObject("http://"
+//                + SERVIER_NAME + "/user/queryContent", List.class);
+//        return results;
+//    }
+//
+//    public List<ConsultContent> queryContentsFallback() {
+//        f.incrementAndGet();
+//        log.info("===============queryContentsFallback=================");
+//
+//        return null;
+//    }
+//
+//    @Override
+//    public String queryMonitor() {
+//        JSONObject jo = new JSONObject();
+//        jo.put("鎴愬姛鏁�", s.get());
+//        jo.put("澶辫触鏁�", f.get());
+//        return jo.toJSONString();
+//    }
+//
+//    /*
+//     *  ObservableExecutionMode.EAGER  琛ㄧず浣跨敤observe()鏂瑰紡鎵ц锛屾槸hot Observeable
+//     *  ObservableExecutionMode.LAZY   琛ㄧず浣跨敤toObservable()鎵ц锛屾槸cold Observeable
+//     */
+//    @HystrixCommand(fallbackMethod = "exceptionHandler",
+//            observableExecutionMode = ObservableExecutionMode.LAZY,
+//            commandProperties = {@HystrixProperty(name = "execution.isolation.strategy", value = "THREAD")},
+//            threadPoolKey = "hystrixJackpool", threadPoolProperties = {@HystrixProperty(name = "coreSize", value = "10")})
+//    @Override
+//    public Observable<String> mergeResult() {
+//        log.info("===================" + Thread.currentThread().getName()
+//                + "================");
+//
+//        return Observable.create(new Observable.OnSubscribe<String>() {
+//
+//            public void call(Subscriber<? super String> observer) {
+//                log.info("==================="
+//                        + Thread.currentThread().getName() + "================");
+//                try {
+//                    if (!observer.isUnsubscribed()) {
+//                        log.info(Thread.currentThread().getName()
+//                                + "===============onNext  invoke=================");
+//                        List<ConsultContent> results = restTemplate.getForObject("http://"
+//                                + SERVIER_NAME + "/user/queryContent", List.class);
+//                        log.info(JSONObject.toJSONString(results));
+//                        observer.onNext(JSONObject.toJSONString(results));
+//
+//                        List<ZgGoods> goods = restTemplate.getForObject("http://"
+//                                + SERVIER_NAME + "/goods/queryGoods", List.class);
+//                        log.info(JSONObject.toJSONString(goods));
+//                        observer.onNext(JSONObject.toJSONString(goods));
+//                        observer.onCompleted();
+//                    }
+//                } catch (Exception e) {
+//                    observer.onError(e);
+//                }
+//            }
+//        });
+//    }
+//
+//    public Observable<String> exceptionHandler() {
+//        return Observable.just("鎴戦敊浜嗭紒锛侊紒");
+//    }
 
 
 }

@@ -38,7 +38,7 @@ public class PreLogFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext currentContext = RequestContext.getCurrentContext();
         HttpServletRequest request = currentContext.getRequest();
-        log.info("zuul pre filter-->" + request.getRequestURL() + "-->" + request.getMethod());
+//        log.info("zuul pre filter-->" + request.getRequestURL() + "-->" + request.getMethod());
         return null;
     }
 }

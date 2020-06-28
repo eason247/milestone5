@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Service;
+
 import com.stock.eason.bean.StockPricedetailsExcel;
 import com.stock.eason.util.DBUtil;
-
+@Service
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class ExcelServiceImpl implements ExcelService{
 
 	@Override

@@ -20,7 +20,7 @@
          <property name="hibernate.show_sql">true</property>
 
          <!--  2:加载所有的映射（*.hbm.xml） -->
-         <mapping resource="User.hbm.xml"/>
+         <mapping resource="Exceldata.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

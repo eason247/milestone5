@@ -42,7 +42,7 @@ public class UserController {
 		return userService.findById(id);
 	}
 
-	@RequestMapping("/users/{id}")
+	@RequestMapping("/deleteUser/{id}")
 	public String deleteUser(@PathVariable Integer id) {
 		return userService.deleteUser(id);
 	}

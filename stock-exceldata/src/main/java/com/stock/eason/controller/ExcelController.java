@@ -1,29 +1,28 @@
 package com.stock.eason.controller;
 
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.netflix.client.http.HttpRequest;
-import com.stock.eason.bean.Company;
 import com.stock.eason.bean.StockPricedetailsExcel;
 import com.stock.eason.service.ExcelService;
+import com.stock.eason.util.ExcelUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,42 +35,42 @@ public class ExcelController {
     private ExcelService excelService;
 
 	@PostMapping("/import")
-	public void  importExcel(@RequestParam("test_e") MultipartFile file)throws Exception{
-		Workbook hssfWorkbook  = null;
+	public void  importExcel(HttpServletRequest request)throws Exception{
+	    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
 
-		StockPricedetailsExcel detail = null;
-		ArrayList<StockPricedetailsExcel> list = new ArrayList<StockPricedetailsExcel>();
-    	// 循环工作表Sheet
-    	for (int numSheet = 0; numSheet <hssfWorkbook.getNumberOfSheets(); numSheet++) {
-    		//HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet); 
-    		Sheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
-    		if (hssfSheet == null) {
-    			continue;
-    		}
-    		// 循环行Row
-    		for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-    			//HSSFRow hssfRow = hssfSheet.getRow(rowNum);
-    			Row hssfRow = hssfSheet.getRow(rowNum);
-    			if (hssfRow != null) {
-//    				student = new User();
-    				//HSSFCell name = hssfRow.getCell(0);
-    				//HSSFCell pwd = hssfRow.getCell(1);
-    				Cell companyCode = hssfRow.getCell(0);
-    				Cell currentPrice = hssfRow.getCell(1);
-    				Cell dateoftheStockPrice = hssfRow.getCell(2);
-    				Cell stockPriceatthisSpecifictime = hssfRow.getCell(3);
-//    				//这里是自己的逻辑
-//    				student.setUserName(name.toString());
-//    				student.setPassword(pwd.toString());
-//    				list.add(student);
-    				detail.setCompanyCode(companyCode.toString());
-    				detail.setCurrentPrice(currentPrice.toString());
-    				detail.setDateoftheStockPrice(dateoftheStockPrice.toString());
-    				detail.setStockPriceatthisSpecifictime(stockPriceatthisSpecifictime.toString());
-    				excelService.saveDetail(detail);
-    			}
-    		}
-    	}
+        MultipartFile file = multipartHttpServletRequest.getFile("courseFile");
+        if(file.isEmpty()) {
+//            return "redirect:/admin/course/list";
+        }
+
+        try {
+            InputStream inputStream = file.getInputStream();
+            List<List<Object>> list = ExcelUtils.getCourseListByExcel(inputStream, file.getOriginalFilename());
+            inputStream.close();
+
+            for (int i = 0; i < list.size(); i++) {
+                List<Object> excelList = list.get(i);
+
+                StockPricedetailsExcel course = new StockPricedetailsExcel();
+
+                course.setCompanyCode(excelList.get(0).toString());
+                course.setCurrentPrice(excelList.get(2).toString());
+                course.setStockPriceatthisSpecifictime(excelList.get(4).toString());
+                // 通过教师姓名查教师id
+
+                // 格式化时间
+                Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(excelList.get(3).toString());
+                course.setDateoftheStockPrice(new SimpleDateFormat("yyyy-MM-dd").format(date));
+
+
+                // 执行插入操作
+                excelService.saveDetail(course);
+            }
+        } catch (Exception e) {
+//            return "redirect:/admin/course/list";
+        }
+
+//        return "redirect:/admin/course/list";
 
 	}
 	@PostMapping("/exportToExcel")
@@ -89,7 +88,7 @@ public class ExcelController {
 
             // 导出的EXCEL列属性
             ArrayList<StockPricedetailsExcel> columnListName = excelService.queryData(param);
-            Bean2ExcelConversionUtils.beans2excelFile07(columnListName, data, response.getOutputStream());
+//            Bean2ExcelConversionUtils.beans2excelFile07(columnListName, data, response.getOutputStream());
             session.setAttribute(randomNumber, new Double(100));
 
         } catch (Exception e) {
@@ -99,7 +98,7 @@ public class ExcelController {
             e.printStackTrace();
             session.setAttribute(randomNumber, new Double(100));
         }
-		
+//		
 	}
 	
 	

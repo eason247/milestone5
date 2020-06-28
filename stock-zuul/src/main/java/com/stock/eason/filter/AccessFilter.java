@@ -37,7 +37,7 @@ public class AccessFilter extends ZuulFilter {
         String accessToken = request.getParameter("accessToken");
         //使用String工具类
         if (StringUtils.isBlank(accessToken)) {
-            log.warn("accessToken is empty");
+//            log.warn("accessToken is empty");
             //设置为false不进行路由
             ctx.setSendZuulResponse(false);  //进行拦截
             ctx.setResponseStatusCode(401);
@@ -47,7 +47,7 @@ public class AccessFilter extends ZuulFilter {
             }
             return null;
         }
-        log.info("access is ok");
+//        log.info("access is ok");
         return null;
     }
 }

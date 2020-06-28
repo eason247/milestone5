@@ -13,7 +13,8 @@ import org.springframework.web.client.RestTemplate;
 //开启断路器功能
 @EnableCircuitBreaker
 @EnableEurekaClient
-public class MicroWebApplication {
+//@EnableJpaRepositories
+public class MicroAdminApplication {
 
     @Bean
     //负载均衡注解
@@ -23,6 +24,6 @@ public class MicroWebApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(MicroWebApplication.class,args);
+        SpringApplication.run(MicroAdminApplication.class,args);
     }
 }

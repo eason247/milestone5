@@ -8,8 +8,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 //开启eureka客户端功能
 @EnableEurekaClient
-public class MicroOrderApplication {
+public class MicroExcelApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MicroOrderApplication.class,args);
+        SpringApplication.run(MicroExcelApplication.class,args);
     }
 }
