@@ -50,7 +50,9 @@ import { NewIPOComponent} from './IPO/newIPO/newIPO.component';
       {path:'newExchange', component : NewExchangeComponent},
       {path:'exchange', component : ExchangeComponent},
       {path:'ipo', component : IPOComponent},
-      {path:'newIpo', component : NewIPOComponent}])
+      {path:'newIpo', component : NewIPOComponent},
+      {path:'login', component : LoginComponent},
+      {path:'register', component : RegisterComponent}])
    ],
    providers: [],
    bootstrap: [

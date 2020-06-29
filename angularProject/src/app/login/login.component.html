@@ -41,11 +41,11 @@
     <!--  通过offset-xx-xx 控制相对偏移量 -->
     <div class="password"> <a class="btn btn-secondary" href="#" role="button">sign up</a></div>
     <h2 class="title col-sm-12 offset-sm-3">Login</h2>
-    <form id="myForm" class="col-sm-6 offset-sm-3 col-12" action="localhost:8080/user" method="get">
+    <form id="myForm" class="col-sm-6 offset-sm-3 col-12" action="http://192.168.1.2:7070/admin/user/login" method="post" >
         <div class="form-group form-row">
             <label class="col-form-label col-2">user name</label>
             <div class="col-10">
-                <input class="form-control col-10" name="user name" type="text" />
+                <input class="form-control col-10" name="username" type="text" />
             </div>
         </div>
         <div class="form-group form-row">

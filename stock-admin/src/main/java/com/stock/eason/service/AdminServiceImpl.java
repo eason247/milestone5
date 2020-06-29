@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
 		  sql = "from Company where " + entry.getKey() + "= ?";
 		  arrayList.add(entry.getValue().toString());
 		}
-		return DBUtil.selectByParam(sql,arrayList);
+		return DBUtil.selectByParam(sql,arrayList,Company.class);
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<IPOsPlanned> getCompanyIPOs() {
 		ArrayList<String> arrayList = new ArrayList<String>();
-		return DBUtil.selectByParam("from IPOs",arrayList);
+		return DBUtil.selectByParam("from IPOs",arrayList,IPOsPlanned.class);
 	}
 
 	@Override
 	public ArrayList<StockExchange> getStockExchange() {
 		ArrayList<String> arrayList = new ArrayList<String>();
-		return DBUtil.selectByParam("from StockExchange",arrayList);
+		return DBUtil.selectByParam("from StockExchange",arrayList,IPOsPlanned.class);
 	}
 
 }

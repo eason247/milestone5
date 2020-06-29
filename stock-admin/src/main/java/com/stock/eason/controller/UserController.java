@@ -21,12 +21,12 @@ public class UserController {
     private UserService userService;
 	
 	@RequestMapping(value = "/register",method = RequestMethod.POST)
-	public String register(@RequestBody User user) {
+	public String register( User user) {
 		return userService.register(user);
 	}
 
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
-	public String login(@RequestBody User user,HttpSession session) {
+	public String login( User user,HttpSession session) {
 		
 		if(userService.login(user)) {
 			session.setAttribute("user", user);

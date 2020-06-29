@@ -69,7 +69,7 @@ public class DBUtil {
 
 	}
 	
-	public static ArrayList selectByParam(String sql, ArrayList<String> params) {
+	public static ArrayList selectByParam(String sql, ArrayList<String> params, Class clazz) {
         SessionFactory factory = null;
         Session session = null;
         try {
@@ -82,7 +82,7 @@ public class DBUtil {
             
             //HRL查询，查询全部信息，注意HRL查询的是实体类的名称，不是数据表的名称，特别注意这一点
             //Query q=session.createQuery("from User");
-            Query q=session.createSQLQuery(sql);
+            Query q=session.createSQLQuery(sql).addEntity(clazz);
             for(int i=0;i<params.size();i++) {
             	q.setParameter(i, params.get(i));
             }

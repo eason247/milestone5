@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
 		String sql = "select * from User where username = ?";
 		ArrayList<String> arrayList = new ArrayList<String>();
 		arrayList.add(user.getUsername());
-		ArrayList<User> list = DBUtil.selectByParam(sql,arrayList );
+		ArrayList<User> list = DBUtil.selectByParam(sql,arrayList ,User.class);
 		if(list!=null) {
 			User u = (User)list.get(0);
 			return u.getPassword().equals(user.getPassword());
