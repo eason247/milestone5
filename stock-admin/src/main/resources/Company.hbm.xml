@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stock.eason.bean">
+    
+    
+     <class name="Company" table="company" catalog="stock">
+        <!-- class下必须要有一个id的子元素 -->
+        <!-- id是用于描述主键的 -->
+        <id name="companyId" column="companyId">
+            <!-- 主键生成策略 -->
+            <generator class="native"></generator>
+        </id>
+		<property name="name" column="name" length="50"></property>
+		<property name="turnover" column="turnover" length="50"></property>
+		<property name="ceo" column="ceo" length="50"></property>
+		<property name="boardOfDirectors" column="boardOfDirectors" length="50"></property>
+		<property name="listedInStockExchanges" column="listedInStockExchanges" length="50"></property>
+		<property name="sector" column="sector" length="50"></property>
+		<property name="description" column="description" length="50"></property>
+		<property name="stockCodeineachStockExchange" column="stockCodeineachStockExchange" length="50"></property>
+    </class>
+</hibernate-mapping>

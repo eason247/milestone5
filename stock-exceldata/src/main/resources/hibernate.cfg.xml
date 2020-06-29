@@ -21,6 +21,9 @@
 
          <!--  2:加载所有的映射（*.hbm.xml） -->
          <mapping resource="Exceldata.hbm.xml"/>
+          <mapping resource="Company.hbm.xml"/>
+         <mapping resource="IPOSPlaned.hbm.xml"/>
+         <mapping resource="StockExchange.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

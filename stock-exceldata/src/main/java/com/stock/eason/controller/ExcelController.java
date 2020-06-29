@@ -35,12 +35,12 @@ public class ExcelController {
     private ExcelService excelService;
 
 	@PostMapping("/import")
-	public void  importExcel(HttpServletRequest request)throws Exception{
+	public String  importExcel(HttpServletRequest request)throws Exception{
 	    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
 
-        MultipartFile file = multipartHttpServletRequest.getFile("courseFile");
+        MultipartFile file = multipartHttpServletRequest.getFile("excelFile");
         if(file.isEmpty()) {
-//            return "redirect:/admin/course/list";
+            return "redirect:/admin/course/list";
         }
 
         try {
@@ -54,23 +54,24 @@ public class ExcelController {
                 StockPricedetailsExcel course = new StockPricedetailsExcel();
 
                 course.setCompanyCode(excelList.get(0).toString());
-                course.setCurrentPrice(excelList.get(2).toString());
-                course.setStockPriceatthisSpecifictime(excelList.get(4).toString());
+                course.setCurrentPrice(excelList.get(1).toString());
+                Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(excelList.get(2).toString());
+                course.setStockPriceatthisSpecifictime(new SimpleDateFormat("yyyy-MM-dd").format(date1));
                 // 通过教师姓名查教师id
 
                 // 格式化时间
-                Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(excelList.get(3).toString());
-                course.setDateoftheStockPrice(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(excelList.get(3).toString());
+                course.setDateoftheStockPrice(new SimpleDateFormat("yyyy-MM-dd").format(date2));
 
 
                 // 执行插入操作
                 excelService.saveDetail(course);
             }
         } catch (Exception e) {
-//            return "redirect:/admin/course/list";
+            return "redirect:/admin/course/list";
         }
 
-//        return "redirect:/admin/course/list";
+        return "redirect:/admin/course/list";
 
 	}
 	@PostMapping("/exportToExcel")

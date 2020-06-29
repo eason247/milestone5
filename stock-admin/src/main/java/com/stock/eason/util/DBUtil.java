@@ -82,7 +82,7 @@ public class DBUtil {
             
             //HRL查询，查询全部信息，注意HRL查询的是实体类的名称，不是数据表的名称，特别注意这一点
             //Query q=session.createQuery("from User");
-            Query q=session.createSQLQuery(sql).addEntity(User.class);
+            Query q=session.createSQLQuery(sql);
             for(int i=0;i<params.size();i++) {
             	q.setParameter(i, params.get(i));
             }

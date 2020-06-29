@@ -3,16 +3,16 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.stock.eason.bean">
-    <!-- 
+<!--     
         name：即实体类的全名
         table：映射到数据库里面的那个表的名称
         catalog：数据库的名称
-     -->
+    
     <class name="User" table="user" catalog="stock">
-        <!-- class下必须要有一个id的子元素 -->
-        <!-- id是用于描述主键的 -->
+        class下必须要有一个id的子元素
+        id是用于描述主键的
         <id name="id" column="id">
-            <!-- 主键生成策略 -->
+            主键生成策略
             <generator class="native"></generator>
         </id>
 		<property name="username" column="username" length="20"></property>
@@ -25,10 +25,10 @@
     
     
      <class name="Company" table="company" catalog="stock">
-        <!-- class下必须要有一个id的子元素 -->
-        <!-- id是用于描述主键的 -->
+        class下必须要有一个id的子元素
+        id是用于描述主键的
         <id name="companyId" column="companyId">
-            <!-- 主键生成策略 -->
+            主键生成策略
             <generator class="native"></generator>
         </id>
 		<property name="name" column="name" length="50"></property>
@@ -42,10 +42,10 @@
     </class>
     
     <class name="IPOsPlanned" table="iPOsPlanned" catalog="stock">
-        <!-- class下必须要有一个id的子元素 -->
-        <!-- id是用于描述主键的 -->
+        class下必须要有一个id的子元素
+        id是用于描述主键的
         <id name="id" column="id">
-            <!-- 主键生成策略 -->
+            主键生成策略
             <generator class="native"></generator>
         </id>
 		<property name="companyName" column="companyName" length="50"></property>
@@ -57,15 +57,27 @@
     </class>
     
     <class name="StockExchange" table="stockExchange" catalog="stock">
-        <!-- id是用于描述主键的 -->
+        id是用于描述主键的
         <id name="id" column="id">
-            <!-- 主键生成策略 -->
+            主键生成策略
             <generator class="native"></generator>
         </id>
 		<property name="name" column="name" length="50"></property>
 		<property name="brief" column="brief" length="50"></property>
 		<property name="contactAddres" column="contactAddres" length="50"></property>
 		<property name="remarks" column="remarks" length="50"></property>
+    </class> -->
+    
+        <class name="StockPricedetailsExcel" table="stockPricedetailsExcel" catalog="stock">
+        <!-- id是用于描述主键的 -->
+        <id name="id" column="id">
+            <!-- 主键生成策略 -->
+            <generator class="native"></generator>
+        </id>
+		<property name="companyCode" column="companyCode" length="50"></property>
+		<property name="currentPrice" column="currentPrice" length="50"></property>
+		<property name="dateoftheStockPrice" column="dateoftheStockPrice" length="50"></property>
+		<property name="stockPriceatthisSpecifictime" column="stockPriceatthisSpecifictime" length="50"></property>
     </class>
     
 </hibernate-mapping>

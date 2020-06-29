@@ -24,12 +24,13 @@ public class ExcelServiceImpl implements ExcelService{
 	public ArrayList<StockPricedetailsExcel> queryData(HashMap<String, Object> param) {
 		Iterator<Entry<String, Object>> entries = param.entrySet().iterator();
 		String sql = "";
+		ArrayList<String> arrayList = new ArrayList<String>();
 		while (entries.hasNext()) {
 		  Entry<String, Object> entry = entries.next();
 		  System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 		  sql = "from StockPricedetailsExcel where " + entry.getKey() + "=" + entry.getValue();
 		}
-		return DBUtil.selectByParam(sql);
+		return DBUtil.selectByParam(sql,arrayList);
 		
 	}
 	

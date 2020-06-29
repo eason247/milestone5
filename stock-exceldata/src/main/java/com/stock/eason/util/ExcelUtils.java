@@ -47,7 +47,7 @@ public class ExcelUtils {
             // 滤过第一行标题
             for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
                 row = sheet.getRow(j);
-                if (row == null || row.getFirstCellNum() == j) {
+                if (row == null) {
                     continue;
                 }
 
@@ -56,7 +56,7 @@ public class ExcelUtils {
                 for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
                     cell = row.getCell(y);
                     // 日期类型转换
-                    if(y == 3) {
+                    if(y == 3 || y==2) {
                         //cell.setCellType(CellType.STRING);
                         double s1 = cell.getNumericCellValue();
                         Date date = HSSFDateUtil.getJavaDate(s1);
