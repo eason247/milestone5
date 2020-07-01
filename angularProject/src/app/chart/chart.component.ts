@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxEchartsModule} from 'ngx-echarts';
+import { HttpClient } from "@angular/common/http";
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -8,9 +9,13 @@ import { NgxEchartsModule} from 'ngx-echarts';
 export class ChartComponent implements OnInit {
 
   options: any;
-  constructor() { }
+  public anyList:any
+  constructor(private http:HttpClient) { }
 
   ngOnInit() {
+
+    this.http.get("http://192.168.1.2:7070/exceldata/excel/queryData")
+    .subscribe(res=>{ this.anyList = res })
 
     this.options = {
 
@@ -52,14 +57,14 @@ export class ChartComponent implements OnInit {
       },
       // x轴
       xAxis: {
-          data: ["IBM", "Microsoft"]
+          data: [this.anyList[0].name,this.anyList[1].name]
       },
       yAxis: {},
       // 数据
       series: [{
           name: '销量',
           type: 'bar',
-          data: [5, 20, 36, 10, 10, 20],
+          data: [this.anyList[0].currentPrice,this.anyList[1].currentPrice],
           markPoint:{
               data:[
                   {type:'max',name:'最大值'},

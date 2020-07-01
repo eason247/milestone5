@@ -25,16 +25,16 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @RequestMapping("/getMatchingCompanies ")
-    public ArrayList<Company> getMatchingCompanies(@RequestBody HashMap<String, Object> param) {
+    @RequestMapping("/getMatchingCompanies")
+    public ArrayList<Company> getMatchingCompanies( HashMap<String, Object> param) {
         return adminService.getMatchingCompanies(param);
         
     }
-    @RequestMapping("/getCompanyDetails  ")
+    @RequestMapping("/getCompanyDetails")
     public Company getCompanyDetails (Integer id) {
     	return adminService.getCompanyDetails(id);
     }
-    @RequestMapping("/getCompanyIPODetails  ")
+    @RequestMapping("/getCompanyIPODetails")
     public IPOsPlanned getCompanyIPODetails (String companyName) {
     	return adminService.getCompanyIPODetails(companyName);
     }
@@ -64,6 +64,7 @@ public class AdminController {
     }
     public static boolean canVisitDb = true;
     /*
+     * 
 //    * 这个接口只为了检测db连接是否ok
 //    * */
 //    @RequestMapping("/db/{can}")

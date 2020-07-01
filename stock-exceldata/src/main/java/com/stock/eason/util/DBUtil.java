@@ -10,7 +10,7 @@ import org.hibernate.query.Query;
 
 public class DBUtil {
 	
-	public static void saveOrUpdate(Object obj) {
+	public static void saveOrUpdate(Object obj) {    
         SessionFactory factory = null;
         Session session = null;
         try {

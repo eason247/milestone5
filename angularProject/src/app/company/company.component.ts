@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from './company.service';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-company',
@@ -9,11 +10,14 @@ import { CompanyService } from './company.service';
 export class CompanyComponent implements OnInit {
   items;
   backgroundColor = "red";
-  constructor(private companyService:CompanyService) { 
+  public anyList:any
+  constructor(private companyService:CompanyService,private http:HttpClient) { 
     this.items = this.companyService.getItems();
   }
 
   ngOnInit() {
+    this.http.get("http://192.168.1.2:7070/admin/admin/getMatchingCompanies")
+    .subscribe(res=>{ this.anyList = res })
   }
 
 }

@@ -28,7 +28,8 @@ public class ExcelServiceImpl implements ExcelService{
 		while (entries.hasNext()) {
 		  Entry<String, Object> entry = entries.next();
 		  System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-		  sql = "from StockPricedetailsExcel where " + entry.getKey() + "=" + entry.getValue();
+		  sql = "from StockPricedetailsExcel where " + entry.getKey() + "=?";
+		  arrayList.add(entry.getValue().toString());
 		}
 		return DBUtil.selectByParam(sql,arrayList);
 		

@@ -19,6 +19,7 @@ import { NewExchangeComponent} from './exchange/newExchange/newExchange.componen
 import { ExchangeComponent} from './exchange/exchange.component';
 import { IPOComponent} from './IPO/IPO.component';
 import { NewIPOComponent} from './IPO/newIPO/newIPO.component';
+import {HttpClientModule} from "@angular/common/http"; 
 
 @NgModule({
    declarations: [
@@ -40,6 +41,7 @@ import { NewIPOComponent} from './IPO/newIPO/newIPO.component';
       BrowserModule,
       AppRoutingModule,
       NgxEchartsModule,
+      HttpClientModule,
       RouterModule.forRoot([{path:'admin', component : AdminComponent},
       {path:'user', component : UserComponent},
       {path:'company', component : CompanyComponent},
